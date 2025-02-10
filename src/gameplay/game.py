@@ -3,6 +3,10 @@ import sys
 
 from src.gameplay.graveyard import Graveyard, load_graveyards
 
+from src.gameplay.zombie import Zombie
+
+zombies = [] 
+
 pg.init()
 pg.mixer.init()
 
@@ -25,7 +29,6 @@ class game:
         
         for graveyard in graveyards:
             graveyard.start_rising()
-        
         game.change_music()
     @staticmethod
     def change_music():
@@ -39,5 +42,6 @@ class game:
         for graveyard in graveyards:  
             graveyard.draw(screen)
             graveyard.update()
+        
         
         
