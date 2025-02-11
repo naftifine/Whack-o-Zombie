@@ -1,8 +1,14 @@
 import pygame as pg
 import time
 
+sprite_images = ["resources/graphic/hammer/hammer.png", 
+                 "resources/graphic/hammer/hammer15.png", 
+                 "resources/graphic/hammer/hammer30.png", 
+                 "resources/graphic/hammer/hammer45.png", 
+                 "resources/graphic/hammer/hammer60.png"]
+
 class CustomMouse:
-    def __init__(self, screen, sprite_images, offset=(0, 0)):
+    def __init__(self, screen, offset=(0, 0)):
         self.screen = screen
         self.sprites = [
             pg.transform.scale(pg.image.load(img).convert_alpha(), (pg.image.load(img).get_width() // 4, pg.image.load(img).get_height() // 4))

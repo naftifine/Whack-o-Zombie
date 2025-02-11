@@ -18,9 +18,7 @@ pg.display.set_caption("Toi danh dau zombie yessir")
 background_image = pg.image.load("resources/graphic/menu_background.png")
 background_image = pg.transform.scale(background_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
-sprite_images = ["resources/graphic/hammer/hammer.png", "resources/graphic/hammer/hammer15.png", "resources/graphic/hammer/hammer30.png", "resources/graphic/hammer/hammer45.png", "resources/graphic/hammer/hammer60.png"]
-
-custom_mouse = CustomMouse(screen, sprite_images, offset=(-20,-25))
+custom_mouse = CustomMouse(screen, offset=(-20,-25))
 custom_mouse.hide_default_cursor()
 
 pg.mixer.init()
@@ -68,6 +66,8 @@ def main():
     total_click = 0
     hit = 0
 
+    limit_time = 30
+
     while running:
         for event in pg.event.get():
             if event.type == pg.QUIT:
@@ -104,12 +104,12 @@ def main():
             for zombie in zombies:
                 if zombie.update():
                     zombie.draw(screen)
-                    if zombie.x <= 100:  # Điều kiện thua
+                    if zombie.x <= 100:  
                         show_end_screen("You Lose")
                 else:
                     zombies.remove(zombie)
 
-            if start_time and pg.time.get_ticks() - start_time >= 30000:  # Điều kiện thắng sau 30s
+            if start_time and pg.time.get_ticks() - start_time >= limit_time*1000:
                 show_end_screen("You Win")
 
         else:
@@ -124,6 +124,3 @@ def main():
 
     pg.quit()
     sys.exit()
-
-if __name__ == "__main__":
-    main()
