@@ -1,6 +1,4 @@
 import pygame as pg
-import os
-import random
 
 graveyard_positions = [
     (620, 170), (700, 170), (780, 170), (860, 170), (940, 170),
@@ -24,10 +22,14 @@ class Zombie:
         self.rising = True  
         self.moving = False  
         self.dead = False
+
         original_death_image = pg.image.load("resources/graphic/Pow.png").convert_alpha()
-        width, height = original_death_image.get_size()  # Lấy kích thước gốc
+        width, height = original_death_image.get_size() 
         self.death_image = pg.transform.scale(original_death_image, (width // 2, height // 2))
+
         self.death_timer = 0
+
+        self.death_sound = pg.mixer.Sound("resources/sounds/bonk.mp3")
     
     def load_sprites(self):
         sprites = []
@@ -80,3 +82,7 @@ class Zombie:
         if self.rect.collidepoint(pos) and not self.dead:
             self.dead = True
             self.death_timer = 0
+            self.death_sound.play()
+            return True
+        else:
+            return False

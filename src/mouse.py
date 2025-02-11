@@ -10,7 +10,7 @@ class CustomMouse:
         ]
         self.animation_sequence = list(range(len(self.sprites))) + list(range(len(self.sprites) - 2, 0, -1))
         self.current_sprite = 0
-        self.animation_time = 0.02
+        self.animation_time = 0.015
         self.last_update = 0
         self.animating = False
         self.offset = offset 
@@ -27,7 +27,7 @@ class CustomMouse:
         if game_active:
             self.sound_effect.play()
         pos = pg.mouse.get_pos()
-        print(pos)
+        # print(pos)
         return pos
 
     def update(self, pos):
