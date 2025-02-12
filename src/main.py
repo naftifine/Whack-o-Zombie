@@ -5,6 +5,8 @@ import random
 from src.mouse import CustomMouse
 from src.gameplay.game import game
 from src.gameplay.zombie import Zombie, graveyard_positions
+from src.gameplay.TimerBar import TimerBar
+
 
 pg.init()
 clock = pg.time.Clock()
@@ -48,10 +50,20 @@ def reset_game():
 def show_end_screen(message):
     end_font = pg.font.Font(None, 80)
     text = end_font.render(message, True, (255, 0, 0))
-    text_rect = text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
+    text_rect = text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 50))
+    
+    hit_percentage = 100 if hit > total_click else (hit / total_click * 100 if total_click > 0 else 0)
+    stats_text = f"Hits: {hit} | Accuracy: {hit_percentage:.2f}%"
+    
+    stats_font = pg.font.Font(None, 50)
+    stats_render = stats_font.render(stats_text, True, (255, 255, 255))
+    stats_rect = stats_render.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 50))
+
     screen.blit(text, text_rect)
+    screen.blit(stats_render, stats_rect)
+    
     pg.display.flip()
-    pg.time.delay(5000)
+    pg.time.delay(3000)
     reset_game()
 
 def main():
@@ -66,9 +78,14 @@ def main():
     total_click = 0
     hit = 0
 
-    limit_time = 30
+    limit_time = 15
+
+    timer_bar = TimerBar(10, 10, 158, 22, limit_time * 1000, screen)
+    
+    print(clock.tick(60))
 
     while running:
+        frame = clock.tick(60)
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 running = False
@@ -79,6 +96,7 @@ def main():
                     game_active = True
                     game.start_game()
                     start_time = pg.time.get_ticks()
+                    timer_bar.reset(limit_time*1000)
                 if event.key == pg.K_p:
                     pg.mixer.music.stop()
                     game_active = False
@@ -111,7 +129,8 @@ def main():
 
             if start_time and pg.time.get_ticks() - start_time >= limit_time*1000:
                 show_end_screen("You Win")
-
+            timer_bar.update(frame)
+            timer_bar.draw()
         else:
             screen.blit(background_image, (0, 0))
             screen.blit(text, text_rect)
@@ -120,7 +139,7 @@ def main():
         custom_mouse.update(pos)
 
         pg.display.flip()
-        clock.tick(60)
+        
 
     pg.quit()
     sys.exit()

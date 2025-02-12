@@ -2,7 +2,6 @@ import pygame as pg
 import sys
 
 from src.gameplay.graveyard import Graveyard, load_graveyards
-
 from src.gameplay.zombie import Zombie
 
 zombies = [] 
